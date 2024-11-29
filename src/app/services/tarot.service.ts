@@ -10,15 +10,15 @@ export class TarotService {
 
   constructor(private http: HttpClient) {}
 
-  getTarotConsultants(): Observable<any> {
+  public getTarotConsultants(): Observable<any> {
     return this.http.get(`${this.apiUrl}/tarot/consultants`);
   }
 
-  getConsultantById(consultantId: string): Observable<any> {
+  public getConsultantById(consultantId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/tarot/consultants/${consultantId}`);
   }
   
-  createAppointment(appointmentData: any): Observable<any> {
+  public createAppointment(appointmentData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/tarot/appointments`, appointmentData);
   }
 }

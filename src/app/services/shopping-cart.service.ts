@@ -9,28 +9,28 @@ export class ShoppingCartService {
   private bearerToken: string = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQ09OU1VMVEFOVCIsIm5hbWUiOiJDb25zdWx0YW50IFVzZXIgMSIsInN1YiI6ImNvbnN1bHRhbnQxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzMyODI0MDI4LCJleHAiOjE3MzI5MTA0Mjh9.Z6llrCHUMBbRINqomWSulOWXwh6HvHnAl_Kr1-aJdF4"
   constructor(private http: HttpClient) {}
 
-  getShoppingCart(userId: number) {
+  public getShoppingCart(userId: number) {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.bearerToken}`
     });
     return this.http.get<any[]>(`${this.apiUrl}/cart/${userId}`, { headers, withCredentials: true });
   }
 
-  updateCartItem(itemId: string, data: any) {
+  public updateCartItem(itemId: string, data: any) {
     const headers = new HttpHeaders({
       Authorization: this.bearerToken
     });
     return this.http.put(`/cart/items/${itemId}`, data);
   }
 
-  deleteCartItem(itemId: string) {
+  public deleteCartItem(itemId: string) {
     const headers = new HttpHeaders({
       Authorization: this.bearerToken
     });
     return this.http.delete(`/cart/items/${itemId}`);
   }
 
-  checkout() {
+  public checkout() {
     const headers = new HttpHeaders({
       Authorization: this.bearerToken
     });

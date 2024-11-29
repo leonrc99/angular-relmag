@@ -1,4 +1,6 @@
 <main>
+<h1 *ngIf="userLogged">Seja bem vindo, {{ userName }}</h1>
+
   <section>
     <h2>Destaques</h2>
     <div style="cursor: pointer;" *ngFor="let product of featuredProducts" routerLink="/product/{{ product.id }}">
