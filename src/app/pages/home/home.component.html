@@ -1,0 +1,18 @@
+<main>
+  <section>
+    <h2>Destaques</h2>
+    <div style="cursor: pointer;" *ngFor="let product of featuredProducts" routerLink="/product/{{ product.id }}">
+      <img src="{{ product.images[0] }}" alt="">
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.description }}</p>
+      <p>{{ product.price | currency: 'BRL'}}</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Categorias</h2>
+    <div *ngFor="let category of categories">
+      <h3 style="cursor: pointer;" [routerLink]="['/category/', category.id]" routerLinkActive="router-link-active"> {{ category.name }}</h3>
+    </div>
+  </section>
+</main>

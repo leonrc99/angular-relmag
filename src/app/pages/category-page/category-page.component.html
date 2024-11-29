@@ -1,0 +1,27 @@
+<div class="breadcrumbs">
+    <a [routerLink]="['/']">Home</a> > <span>{{ category }}</span>
+  </div>
+  
+  <div *ngIf="isLoading" class="loading">
+    <p>Carregando produtos...</p>
+  </div>
+  
+  <div *ngIf="!isLoading && products.length === 0">
+    <p>Não há produtos disponíveis nesta categoria.</p>
+  </div>
+  
+  <div *ngIf="!isLoading && products.length > 0">
+    <div class="filters">
+      <h3>Filtros</h3>
+      <!-- Aqui você pode implementar os filtros -->
+      <p>Filtros ainda não implementados.</p>
+    </div>
+  
+    <div class="product-grid">
+      <div class="product-card" *ngFor="let product of products">
+        <h4>{{ product.name }}</h4>
+        <p>{{ product.price | currency: 'BRL' }}</p>
+      </div>
+    </div>
+  </div>
+  
