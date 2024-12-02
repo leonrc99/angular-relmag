@@ -1,21 +1,31 @@
 <app-header></app-header>
 <main>
-<h1 *ngIf="userLogged">Seja bem vindo, {{ userName }}</h1>
+  <h1 *ngIf="userLogged">Seja bem vindo, {{ userName }}</h1>
 
-  <section>
-    <h2>Destaques</h2>
-    <div style="cursor: pointer;" *ngFor="let product of featuredProducts" routerLink="/product/{{ product.id }}">
-      <img src="{{ product.images[0] }}" alt="">
-      <h3>{{ product.name }}</h3>
-      <p>{{ product.description }}</p>
-      <p>{{ product.price | currency: 'BRL'}}</p>
+  <div class="flex flex-col w-full justify-center items-center">
+    <div class="flex flex-row gap-3 items-center justify-center p-8">
+      <img class="w-10" src="assets/tarot-icons/tarot-card.svg" alt="" />
+      <h1 class="text-purple-950 text-2xl font-medium font-serif">ESPECIAIS</h1>
+      <img class="w-10" src="assets/tarot-icons/tarot-card.svg" alt="" />
     </div>
-  </section>
 
-  <section>
-    <h2>Categorias</h2>
-    <div *ngFor="let category of categories">
-      <h3 style="cursor: pointer;" [routerLink]="['/category/', category.id]" routerLinkActive="router-link-active"> {{ category.name }}</h3>
+    <div class="grid md:grid-cols-4 gap-4">
+      <div
+        class="flex flex-col justify-around items-center h-96 w-60 px-6 py-4 border rounded-md border-purple-900 text-center"
+        *ngFor="let product of featuredProducts"
+        routerLink="/product/{{ product.id }}"
+      >
+        <img class="border rounded-md border-purple-900" src="https://placehold.co/200x200" alt="" />
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description }}</p>
+        <p>{{ product.price | currency : "BRL" }}</p>
+        <button
+          class="border-purple-900 cursor-pointer bg-white w-50 text-purple-900 border py-1 px-8 rounded-full text-sm font-semibold hover:text-white hover:bg-purple-900 transition"
+          type="submit"
+        >
+          Comprar Agora
+        </button>
+      </div>
     </div>
-  </section>
+  </div>
 </main>
