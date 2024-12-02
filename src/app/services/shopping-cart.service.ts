@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class ShoppingCartService {
   private apiUrl = 'http://localhost:8080/api'; // URL base da API
-  private bearerToken: string = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQ09OU1VMVEFOVCIsIm5hbWUiOiJDb25zdWx0YW50IFVzZXIgMSIsInN1YiI6ImNvbnN1bHRhbnQxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzMyODI0MDI4LCJleHAiOjE3MzI5MTA0Mjh9.Z6llrCHUMBbRINqomWSulOWXwh6HvHnAl_Kr1-aJdF4"
+  private bearerToken: string = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJuYW1lIjoiTGVvbmFyZG8gUm9kcmlndWVzIiwic3ViIjoibGVvbmFyZG9AYWRtaW5uLmNvbSIsImlhdCI6MTczMjkxNjk0NCwiZXhwIjoxNzMzMDAzMzQ0fQ.0dBm5C6fZm6269X-PHxis_4RWvez5LMfXOdsUveYMKg"
   constructor(private http: HttpClient) {}
 
   public getShoppingCart(userId: number) {

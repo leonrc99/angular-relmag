@@ -1,26 +1,28 @@
+<app-header></app-header>
+
 <div *ngIf="isLoading" class="loading">
-    <p>Carregando tarólogos disponíveis...</p>
+  <p>Carregando tarólogos disponíveis...</p>
+</div>
+
+<div *ngIf="!isLoading && consultants.length === 0">
+  <p>Não há tarólogos disponíveis no momento.</p>
+</div>
+
+<div *ngIf="!isLoading && consultants.length > 0">
+  <div class="filters">
+    <h3>Filtros</h3>
+    <!-- Implementar filtros no futuro -->
+    <p>Filtros ainda não implementados.</p>
   </div>
-  
-  <div *ngIf="!isLoading && consultants.length === 0">
-    <p>Não há tarólogos disponíveis no momento.</p>
-  </div>
-  
-  <div *ngIf="!isLoading && consultants.length > 0">
-    <div class="filters">
-      <h3>Filtros</h3>
-      <!-- Implementar filtros no futuro -->
-      <p>Filtros ainda não implementados.</p>
+
+  <div class="consultants-grid">
+    <div class="consultant-card" *ngFor="let consultant of consultants">
+      <img [src]="consultant.image" alt="Foto de {{ consultant.user.name }}" />
+      <h4>{{ consultant.name }}</h4>
+      <p>Especialidade: {{ consultant.specialties }}</p>
+      <button [routerLink]="['/tarot/consultant/', consultant.id]">
+        Ver Perfil
+      </button>
     </div>
-  
-    <div class="consultants-grid">
-      <div class="consultant-card" *ngFor="let consultant of consultants">
-        <img [src]="consultant.image" alt="Foto de {{ consultant.user.name }}" />
-        <h4>{{ consultant.name }}</h4>
-        <p>Especialidade: {{ consultant.specialties }}</p>
-        <button [routerLink]="['/tarot/consultant/', consultant.id ]">
-          Ver Perfil
-        </button>
-      </div>
-    </div>
   </div>
+</div>

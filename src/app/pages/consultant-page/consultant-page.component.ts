@@ -3,11 +3,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TarotService } from '../../services/tarot.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from "../../components/header/header.component";
 
 @Component({
   selector: 'app-consultant-page',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, HeaderComponent],
   templateUrl: './consultant-page.component.html',
   styleUrl: './consultant-page.component.scss'
 })

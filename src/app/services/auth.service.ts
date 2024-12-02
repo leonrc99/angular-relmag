@@ -37,4 +37,8 @@ export class AuthService {
   public register(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, userData);
   }
+
+  public logout(): void {
+    localStorage.removeItem('authToken');
+  }
 }

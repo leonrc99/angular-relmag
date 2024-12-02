@@ -1,47 +1,54 @@
+<app-header></app-header>
+
 <div class="cart-page">
-    <h1>Carrinho de Compras</h1>
-  
-    <div *ngIf="isLoading">Carregando...</div>
-  
-    <div *ngIf="!isLoading && cartItems.length === 0">
-      <p>Seu carrinho está vazio.</p>
-    </div>
-  
-    <div *ngIf="!isLoading && cartItems.length > 0">
-      <table>
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Quantidade</th>
-            <th>Preço Unitário</th>
-            <th>Subtotal</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of cartItems">
-            <td>{{ item.product.name }}</td>
-            <td>
-              <input
-                type="number"
-                [value]="item.quantity"
-                (change)="updateQuantity()"
-                min="1"
-              />
-            </td>
-            <td>{{ item.price | currency }}</td>
-            <td>{{ item.price * item.quantity | currency }}</td>
-            <td>
-              <button (click)="removeItem(item.id, userId)">Remover</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-  
-      <div class="cart-summary">
-        <h2>Resumo do Pedido</h2>
-        <p>Total: {{ totalPrice | currency }}</p>
-        <button (click)="checkout()">Finalizar Compra</button>
-      </div>
+  <h1>Carrinho de Compras</h1>
+
+  <div *ngIf="isLoading">Carregando...</div>
+
+  <div *ngIf="!isLoading && cartItems.length === 0">
+    <p>Seu carrinho está vazio.</p>
+  </div>
+
+  <div *ngIf="!isLoading && cartItems.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Quantidade</th>
+          <th>Preço Unitário</th>
+          <th>Subtotal</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cartItems">
+          <td>{{ item.product.name }}</td>
+          <td>
+            <input
+              type="number"
+              [value]="item.quantity"
+              (change)="updateQuantity()"
+              min="1"
+            />
+          </td>
+          <td>{{ item.price | currency }}</td>
+          <td>{{ item.price * item.quantity | currency }}</td>
+          <td>
+            <button (click)="removeItem(item.id, userId)">Remover</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="cart-summary">
+      <h2>Resumo do Pedido</h2>
+      <p>Total: {{ totalPrice | currency }}</p>
+      <button
+        class="border-purple-900 bg-white text-purple-900 border-2 py-1 px-8 rounded-full text-sm font-semibold hover:text-white hover:bg-purple-900 transition"
+        (click)="checkout()"
+      >
+        Finalizar Compra
+      </button>
     </div>
   </div>
+</div>

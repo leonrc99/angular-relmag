@@ -1,25 +1,26 @@
+<app-header></app-header>
 <div *ngIf="isLoading" class="loading">
-    <p>Carregando tarólogo...</p>
+  <p>Carregando tarólogo...</p>
+</div>
+
+<div *ngIf="!isLoading && consultant">
+  <div class="consultant-profile">
+    <img [src]="consultant.photo" alt="{{ consultant.user.name }}" />
+    <h1>{{ consultant.name }}</h1>
+    <p class="description">{{ consultant.bio }}</p>
+    <p class="specialties">{{ consultant.specialties }}</p>
   </div>
-  
-  <div *ngIf="!isLoading && consultant">
-    <div class="consultant-profile">
-      <img [src]="consultant.photo" alt="{{ consultant.user.name }}" />
-      <h1>{{ consultant.name }}</h1>
-      <p class="description">{{ consultant.bio }}</p>
-      <p class="specialties">{{ consultant.specialties }}</p>
-    </div>
-  
-    <div class="schedule">
-      <h2>Agendar Consulta</h2>
-      <form [formGroup]="appointmentForm" (ngSubmit)="scheduleAppointment()">
-        <label for="date">Data:</label>
-        <input id="date" type="date" formControlName="date" />
-        
-        <label for="time">Hora:</label>
-        <input id="time" type="time" formControlName="time" />
-        
-        <button type="submit">Agendar</button>
-      </form>
-    </div>
+
+  <div class="schedule">
+    <h2>Agendar Consulta</h2>
+    <form [formGroup]="appointmentForm" (ngSubmit)="scheduleAppointment()">
+      <label for="date">Data:</label>
+      <input id="date" type="date" formControlName="date" />
+
+      <label for="time">Hora:</label>
+      <input id="time" type="time" formControlName="time" />
+
+      <button type="submit">Agendar</button>
+    </form>
   </div>
+</div>

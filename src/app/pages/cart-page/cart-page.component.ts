@@ -3,11 +3,12 @@ import { ShoppingCartService } from '../../services/shopping-cart.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HeaderComponent } from "../../components/header/header.component";
 
 @Component({
   selector: 'app-cart-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HeaderComponent],
   templateUrl: './cart-page.component.html',
   styleUrl: './cart-page.component.scss',
 })

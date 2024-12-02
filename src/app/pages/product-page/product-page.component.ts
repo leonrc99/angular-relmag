@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { HeaderComponent } from "../../components/header/header.component";
 
 @Component({
   selector: 'app-product-page',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, RouterModule],
+  imports: [CommonModule, CurrencyPipe, RouterModule, HeaderComponent],
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.scss',
 })
