@@ -4,11 +4,11 @@
   <h1 class="text-xl font-bold text-purple-900 mb-8">Registrar</h1>
 
   <form
-    class="grid grid-cols-2 gap-8 w-full px-40"
+    class="grid grid-cols-1 gap-8 w-full px-10"
     [formGroup]="registerForm"
     (ngSubmit)="onSubmit()"
   >
-    <div class="">
+    <div class="md:grid md:grid-cols-2 gap-8">
       <div>
         <label class="block mb-2 text-sm font-medium text-purple-900" for="name"
           >Nome</label
@@ -117,9 +117,7 @@
           +12123456789.
         </div>
       </div>
-    </div>
 
-    <div class="">
       <div>
         <label
           class="block mb-2 text-sm font-medium text-purple-900"
@@ -228,9 +226,6 @@
         </div>
       </div>
     </div>
-
-    <div></div>
-
     <button
       class="w-full border-purple-900 cursor-pointer bg-white text-purple-900 border-2 py-2 rounded-full text-base font-semibold hover:text-white hover:bg-purple-900 transition"
       type="submit"
@@ -238,7 +233,6 @@
     >
       Registrar
     </button>
-
   </form>
   <div
     *ngIf="errorMessage"

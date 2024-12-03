@@ -1,8 +1,8 @@
 <header class="relative flex flex-col bg-purple-900">
   <div
-    class="grid grid-cols-3 gap-4 m-0 py-20 bg-gradient-to-tl from-purple-950 to-purple-900 text-white justify-center items-center"
+    class="md:grid md:grid-cols-3 flex flex-col gap-4 m-0 py-20 px-10 bg-gradient-to-tl from-purple-950 to-purple-900 text-white justify-center items-center"
   >
-    <div class="logo flex flex-row justify-center items-center">
+    <div class="logo flex flex-row justify-center items-center mb-4">
       <img
         (click)="goToPage('/')"
         class="w-60 cursor-pointer"
@@ -11,7 +11,7 @@
       />
     </div>
 
-    <div class="flex flex-row w-full justify-center items-center">
+    <div class="flex flex-row w-full justify-center items-center mb-4">
       <div class="relative flex justify-center items-center w-full">
         <input
           class="w-full bg-white placeholder:text-purple-400 text-purple-950 text-sm border border-slate-200 rounded-full pl-4 pr-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
@@ -79,12 +79,12 @@
  
     <nav class="max-w-2xl mx-auto w-full flex flex-row justify-center items-center bg-purple-900">
       <div
-        class="container mx-auto w-full flex flex-wrap items-center justify-between sm:justify-around"
+        class="container mx-auto w-full flex flex-wrap items-center justify-center sm:justify-around"
       >
         <button
           data-collapse-toggle="mobile-menu"
           type="button"
-          class="md:hidden ml-3 text-purple-100 hover:text-purple-100 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-lg inline-flex items-center justify-center"
+          class="md:hidden text-purple-100 hover:text-purple-100 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-lg inline-flex items-center justify-center p-5"
           aria-controls="mobile-menu-2"
           aria-expanded="false"
         >

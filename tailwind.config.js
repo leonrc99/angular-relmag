@@ -2,7 +2,12 @@
 module.exports = {
   content: ["./src/**/*.{html,ts}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "hp-image": "url('/assets/images/hp-image.png')",
+        "sword-image": "url('/assets/images/sword-image.png')",
+      },
+    },
   },
   plugins: [],
 };
