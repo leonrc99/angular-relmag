@@ -1,37 +1,70 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ShoppingCartService } from '../../services/shopping-cart.service';
-import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from "../../components/header/header.component";
+import { HeaderComponent } from '../../components/header/header.component';
+import { AuthService } from '../../services/auth.service';
+import { ProductCardComponent } from "../../components/product-card/product-card.component";
+import { ProductService } from '../../services/product.service';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cart-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, CurrencyPipe, ProductCardComponent, RouterModule],
   templateUrl: './cart-page.component.html',
   styleUrl: './cart-page.component.scss',
 })
-export class CartPageComponent {
+export class CartPageComponent implements OnInit {
+  @ViewChild('carousel') carousel!: ElementRef;
+
   cartItems: any[] = [];
   isLoading = true;
   totalPrice = 0;
-  userId!: number;
+  userId: any;
+  
+  products: any[] = [];
 
   constructor(
     private cartService: ShoppingCartService,
-    private route: ActivatedRoute
+    private authService: AuthService,
+    private productService: ProductService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      const userId = params['id'];
-      this.userId = userId;
-      this.loadCart(userId);
+    this.getCartByLoggedUser();
+
+    this.productService.getFeaturedProducts().subscribe((products) => {
+      this.products = products;
     });
   }
 
-  loadCart(userId: number): void {
+  getCartByLoggedUser() {
+    if(!localStorage.getItem('authToken')) {
+      this.router.navigate(['/login'])
+    }
+
+    this.authService.getLoggedUser().subscribe({
+      next: (user: any) => {
+        this.userId = user.id;
+        console.log('userId: ', this.userId);
+        this.loadCart(this.userId); // Mover para cá
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  public addItemToCart(userId: string, productId: string, quantity: number) {
+    this.cartService.addItemToCart(userId, productId, quantity).subscribe({
+      next: () => this.getCartByLoggedUser(),
+      error: (err) => console.error('Erro ao adicionar item:', err),
+    });
+  }
+
+  loadCart(userId: any): void {
     this.isLoading = true;
     this.cartService.getShoppingCart(userId).subscribe({
       next: (items: any) => {
@@ -46,12 +79,15 @@ export class CartPageComponent {
     });
   }
 
-  updateQuantity(): void {
-    console.log('updated!')
+  updateQuantity(userId: string, productId: string, quantity: number): void {
+    this.cartService.addItemToCart(userId, productId, quantity).subscribe({
+      next: () => this.loadCart(userId),
+      error: (err) => console.error('Erro ao adicionar item:', err),
+    });
   }
 
-  removeItem(itemId: string, userId: number): void {
-    this.cartService.deleteCartItem(itemId).subscribe({
+  removeItem(itemId: string, userId: string): void {
+    this.cartService.deleteCartItem(itemId, userId).subscribe({
       next: () => this.loadCart(userId),
       error: (err) => console.error('Erro ao remover item:', err),
     });
@@ -70,4 +106,31 @@ export class CartPageComponent {
       error: (err) => console.error('Erro ao finalizar a compra:', err),
     });
   }
+
+  cardWidth = 0;
+
+  ngAfterViewInit() {
+    // Calcular a largura do card dinamicamente
+    const cardElement =
+      this.carousel.nativeElement.querySelector('app-product-card');
+    if (cardElement) {
+      this.cardWidth = cardElement.offsetWidth + 16; // Largura + espaçamento (gap)
+    }
+  }
+
+  scrollLeft() {
+    this.carousel.nativeElement.scrollBy({
+      left: -this.cardWidth * 4, // Pular 4 cards
+      behavior: 'smooth',
+    });
+  }
+
+  scrollRight() {
+    this.carousel.nativeElement.scrollBy({
+      left: this.cardWidth * 4, // Pular 4 cards
+      behavior: 'smooth',
+    });
+  }
+
+  
 }

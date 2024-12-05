@@ -3,11 +3,13 @@ import { ProductService } from '../../services/product.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { HeaderComponent } from "../../components/header/header.component";
+import { BreadcrumbComponent } from "../../components/breadcrumb/breadcrumb.component";
+import { ProductCardComponent } from "../../components/product-card/product-card.component";
 
 @Component({
   selector: 'app-category-page',
   standalone: true,
-  imports: [CurrencyPipe, CommonModule, RouterModule, HeaderComponent],
+  imports: [CommonModule, RouterModule, HeaderComponent, BreadcrumbComponent, ProductCardComponent],
   templateUrl: './category-page.component.html',
   styleUrl: './category-page.component.scss'
 })
@@ -15,7 +17,7 @@ export class CategoryPageComponent implements OnInit {
   products: any[] = [];
   categoryId!: string;
   isLoading = true;
-  category: any;
+  category!: string;
 
   constructor(private route: ActivatedRoute, private apiService: ProductService) {}
 

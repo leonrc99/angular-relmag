@@ -5,12 +5,18 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HeaderComponent } from '../../components/header/header.component';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
-import { CategoryCardComponent } from "../../components/category-card/category-card.component";
+import { CategoryCardComponent } from '../../components/category-card/category-card.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, HeaderComponent, ProductCardComponent, CategoryCardComponent],
+  imports: [
+    RouterModule,
+    CommonModule,
+    HeaderComponent,
+    ProductCardComponent,
+    CategoryCardComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -28,16 +34,16 @@ export class HomeComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.loggedUser();
+
     this.productService.getFeaturedProducts().subscribe((products) => {
       this.featuredProducts = products;
     });
-
-    this.productService.getCategories().subscribe((categories) => {
-      this.categories = categories;
-    });
-
-    this.loggedUser();
   }
 
   loggedUser() {

@@ -14,7 +14,7 @@ export const routes: Routes = [
   { path: 'tarot', component: TarotListComponent },
   { path: 'product/:id', component: ProductPageComponent },
   { path: 'consultant/:id', component: ConsultantPageComponent },
-  { path: 'shopping-cart/:id', component: CartPageComponent },
+  { path: 'shopping-cart', component: CartPageComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
   { path: '**', redirectTo: '' }

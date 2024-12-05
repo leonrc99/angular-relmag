@@ -15,7 +15,7 @@
   </div>
   <button
     class="border-purple-900 cursor-pointer bg-white w-50 text-purple-900 border py-1 px-8 rounded-full text-sm font-semibold hover:text-white hover:bg-purple-900 transition"
-    routerLink="/product/{{ productId }}"
+    (click)="addItemToCart(userId, productId, 1)"
   >
     Comprar Agora
   </button>

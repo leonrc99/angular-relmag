@@ -6,34 +6,63 @@ import { Injectable } from '@angular/core';
 })
 export class ShoppingCartService {
   private apiUrl = 'http://localhost:8080/api'; // URL base da API
-  private bearerToken: string = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJuYW1lIjoiTGVvbmFyZG8gUm9kcmlndWVzIiwic3ViIjoibGVvbmFyZG9AYWRtaW5uLmNvbSIsImlhdCI6MTczMjkxNjk0NCwiZXhwIjoxNzMzMDAzMzQ0fQ.0dBm5C6fZm6269X-PHxis_4RWvez5LMfXOdsUveYMKg"
-  constructor(private http: HttpClient) {}
+  private token: any;
 
-  public getShoppingCart(userId: number) {
+  constructor(private http: HttpClient) {
+    if (typeof window !== 'undefined') {
+      this.token = localStorage.getItem('authToken');
+    }
+  }
+
+  private getToken(): string | null {
+    return localStorage.getItem('authToken');
+  }
+
+  public addItemToCart(userId: string, productId: string, quantity: number) {
+    const token = this.getToken();
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.bearerToken}`
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.post(`${this.apiUrl}/cart/items?userId=${userId}&productId=${productId}&quantity=${quantity}`, {}, { headers, responseType: 'text' });
+  }
+
+
+  public getShoppingCart(userId: string) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`
     });
     return this.http.get<any[]>(`${this.apiUrl}/cart/${userId}`, { headers, withCredentials: true });
   }
 
   public updateCartItem(itemId: string, data: any) {
     const headers = new HttpHeaders({
-      Authorization: this.bearerToken
+      Authorization: this.token
     });
     return this.http.put(`/cart/items/${itemId}`, data);
   }
 
-  public deleteCartItem(itemId: string) {
+  public deleteCartItem(itemId: string, userId: string) {
+    const token = this.getToken();
     const headers = new HttpHeaders({
-      Authorization: this.bearerToken
+      Authorization: `Bearer ${token}`
     });
-    return this.http.delete(`/cart/items/${itemId}`);
+    return this.http.delete(`${this.apiUrl}/cart/items/${itemId}?userId=${userId}`, { headers, responseType: 'text' });
   }
 
+  
   public checkout() {
     const headers = new HttpHeaders({
-      Authorization: this.bearerToken
+      Authorization: this.token
     });
     return this.http.post('/payments', {});
+  }
+
+  getLoggedUser(){
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`
+    });
+
+    return this.http.get(`${this.apiUrl}/api/users/me`, { headers, withCredentials: true })
   }
 }
