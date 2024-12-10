@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 
@@ -8,11 +8,12 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080'; // Atualize conforme necessário
-  private token: any;
+  private apiUrl = 'http://34.57.208.66:8080'; // Atualize conforme necessário
+  private token: any;  
+  private userSubject = new BehaviorSubject<any>(null);
 
   constructor(private http: HttpClient, private router: Router) {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && localStorage) {
       this.token = localStorage.getItem('authToken');
     }
   }
@@ -25,8 +26,8 @@ export class AuthService {
   }
 
   public saveToken(token: string) {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('authToken', `${token}`);
+    if (typeof window !== 'undefined' && localStorage) {
+      localStorage.setItem('authToken', token);
     }
   }
 
@@ -43,18 +44,36 @@ export class AuthService {
   }
 
   public logout(): void {
-    localStorage.removeItem('authToken');
+    if (typeof window !== 'undefined' && localStorage) {
+      localStorage.removeItem('authToken');
+    }
   }
 
-  getLoggedUser() {
+  public getLoggedUser(): Observable<any> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
+  
+    if (!this.userSubject.value) {
+      this.http.get(`${this.apiUrl}/api/users/me`, { headers }).subscribe({
+        next: (user) => this.userSubject.next(user),
+        error: (err) => console.error('Erro ao obter usuário:', err),
+      });
+    }
+  
+    return this.userSubject.asObservable(); // Retorna um Observable do BehaviorSubject
+  }
 
-    return this.http.get(`${this.apiUrl}/api/users/me`, {
-      headers,
-      withCredentials: true,
-    });
+  public getUserObservable() {
+    return this.userSubject.asObservable();
+  }
+
+  isAuthenticated(): boolean {
+    if (typeof window !== 'undefined' && localStorage) {
+      const token = localStorage.getItem('authToken');
+      return !!token; // Retorna true se o token existir
+    }
+    return false; // Retorna false em ambientes sem localStorage
   }
 }

@@ -14,6 +14,7 @@ export class ConsultantCardComponent {
   @Input() consultantName!: string;
   @Input() consultantPrice!: string;
   @Input() consultantSpecialties!: string; 
+  @Input() imageUrl!: string;
 
   constructor(private router: Router){}
   

@@ -8,7 +8,7 @@ import { HeaderComponent } from "../../components/header/header.component";
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, HeaderComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'
 })
@@ -38,8 +38,6 @@ export class LoginPageComponent {
   public onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-
-      console.log('Login Data:', { email, password });
 
       this.authService.login({ email, password }).subscribe({
         next: (res: any) => {

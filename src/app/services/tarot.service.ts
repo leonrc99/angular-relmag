@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,9 +6,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TarotService {
-  private apiUrl = 'http://localhost:8080/api'; // URL base da API
+  private apiUrl = 'http://34.57.208.66:8080/api'; // URL base da API
+  private token: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    if (typeof window !== 'undefined') {
+      this.token = localStorage.getItem('authToken');
+    }
+  }
 
   public getTarotConsultants(): Observable<any> {
     return this.http.get(`${this.apiUrl}/tarot/consultants`);
@@ -19,6 +24,15 @@ export class TarotService {
   }
   
   public createAppointment(appointmentData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/tarot/appointments`, appointmentData);
+
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post(`${this.apiUrl}/tarot/appointments`, appointmentData, { 
+      headers,
+      responseType: 'text',
+     });
   }
 }

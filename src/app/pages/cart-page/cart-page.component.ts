@@ -4,14 +4,21 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../components/header/header.component';
 import { AuthService } from '../../services/auth.service';
-import { ProductCardComponent } from "../../components/product-card/product-card.component";
+import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { ProductService } from '../../services/product.service';
 import { Router, RouterModule } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-cart-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, CurrencyPipe, ProductCardComponent, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CurrencyPipe,
+    ProductCardComponent,
+    RouterModule,
+  ],
   templateUrl: './cart-page.component.html',
   styleUrl: './cart-page.component.scss',
 })
@@ -22,7 +29,7 @@ export class CartPageComponent implements OnInit {
   isLoading = true;
   totalPrice = 0;
   userId: any;
-  
+
   products: any[] = [];
 
   constructor(
@@ -41,18 +48,21 @@ export class CartPageComponent implements OnInit {
   }
 
   getCartByLoggedUser() {
-    if(!localStorage.getItem('authToken')) {
-      this.router.navigate(['/login'])
+    if (!localStorage.getItem('authToken')) {
+      this.router.navigate(['/login']);
+      return;
     }
 
     this.authService.getLoggedUser().subscribe({
       next: (user: any) => {
-        this.userId = user.id;
-        console.log('userId: ', this.userId);
-        this.loadCart(this.userId); // Mover para cá
+        if (user) {
+          this.userId = user.id;
+          this.loadCart(this.userId); // Carregar o carrinho após obter o usuário
+        }
       },
-      error: (err) => {
-        console.error(err);
+      error: (err: HttpErrorResponse) => {
+        console.error('Erro ao obter usuário:', err.message);
+        this.router.navigate(['/login']);
       },
     });
   }
@@ -101,8 +111,12 @@ export class CartPageComponent implements OnInit {
   }
 
   checkout(): void {
-    this.cartService.checkout().subscribe({
-      next: () => alert('Compra finalizada com sucesso!'),
+    const userId = this.userId;
+
+    this.cartService.checkout(userId).subscribe({
+      next: (paymentLink) => {
+        window.location.href = paymentLink; // Redireciona para a página de pagamento
+      },
       error: (err) => console.error('Erro ao finalizar a compra:', err),
     });
   }
@@ -131,6 +145,4 @@ export class CartPageComponent implements OnInit {
       behavior: 'smooth',
     });
   }
-
-  
 }

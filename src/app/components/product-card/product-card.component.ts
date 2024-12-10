@@ -23,20 +23,13 @@ export class ProductCardComponent {
     private cartService: ShoppingCartService,
     private authService: AuthService,
     private router: Router
-  ) {}
-
-  getLoggedUser() {
-    if (!localStorage.getItem('authToken')) {
-      this.router.navigate(['/login']);
-    }
-
+  ) {
+    // Inscrevendo-se no Observable do estado do usuário
     this.authService.getLoggedUser().subscribe({
-      next: (user: any) => {
-        this.userId = user.id;
+      next: (user) => {
+        this.userId = user?.id || null; // Atualiza o userId quando o usuário está disponível
       },
-      error: (err) => {
-        console.error(err);
-      },
+      error: (err) => console.error('Erro ao obter o usuário:', err),
     });
   }
 
@@ -44,11 +37,14 @@ export class ProductCardComponent {
     this.router.navigate(['/shopping-cart']);
   }
 
-  public addItemToCart(userId: string, productId: string, quantity: number) {
-    this.getLoggedUser();
-    
-    this.cartService.addItemToCart(userId, productId, quantity).subscribe({
-      next: () => this.goToCartPage(),
+  public addItemToCart(productId: string, quantity: number) {
+    if (!this.userId) {
+      this.router.navigate(['/login']); // Redirecionar se o usuário não estiver logado
+      return;
+    }
+
+    this.cartService.addItemToCart(this.userId, productId, quantity).subscribe({
+      next: () => this.router.navigate(['/shopping-cart']),
       error: (err) => console.error('Erro ao adicionar item:', err),
     });
   }

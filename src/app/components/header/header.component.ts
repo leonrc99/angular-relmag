@@ -27,7 +27,6 @@ export class HeaderComponent implements OnInit {
   
     if (dropdownButton && dropdownMenu) {
       dropdownButton.addEventListener('click', () => {
-        console.log('Dropdown clicked!');
         dropdownMenu.classList.toggle('hidden');
       });
     } else {

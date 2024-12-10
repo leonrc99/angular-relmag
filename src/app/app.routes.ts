@@ -7,15 +7,17 @@ import { ConsultantPageComponent } from './pages/consultant-page/consultant-page
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
+import { GuestGuard } from './services/guards/guest-guard.service';
+import { AuthGuard } from './services/guards/auth-guard.service';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'category/:id', component: CategoryPageComponent },
-  { path: 'tarot', component: TarotListComponent },
+  { path: 'tarot', component: TarotListComponent, canActivate: [AuthGuard]  },
   { path: 'product/:id', component: ProductPageComponent },
   { path: 'consultant/:id', component: ConsultantPageComponent },
-  { path: 'shopping-cart', component: CartPageComponent },
-  { path: 'login', component: LoginPageComponent },
-  { path: 'register', component: RegisterPageComponent },
+  { path: 'shopping-cart', component: CartPageComponent, canActivate: [AuthGuard]  },
+  { path: 'login', component: LoginPageComponent, canActivate: [GuestGuard] },
+  { path: 'register', component: RegisterPageComponent,  canActivate: [GuestGuard] },
   { path: '**', redirectTo: '' }
 ];

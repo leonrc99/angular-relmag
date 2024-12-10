@@ -1,11 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShoppingCartService {
-  private apiUrl = 'http://localhost:8080/api'; // URL base da API
+  private apiUrl = 'http://34.57.208.66:8080/api'; // URL base da API
   private token: any;
 
   constructor(private http: HttpClient) {
@@ -21,48 +22,56 @@ export class ShoppingCartService {
   public addItemToCart(userId: string, productId: string, quantity: number) {
     const token = this.getToken();
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post(`${this.apiUrl}/cart/items?userId=${userId}&productId=${productId}&quantity=${quantity}`, {}, { headers, responseType: 'text' });
+    return this.http.post(
+      `${this.apiUrl}/cart/items?userId=${userId}&productId=${productId}&quantity=${quantity}`,
+      {},
+      { headers, responseType: 'text' }
+    );
   }
-
 
   public getShoppingCart(userId: string) {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.token}`
+      Authorization: `Bearer ${this.token}`,
     });
-    return this.http.get<any[]>(`${this.apiUrl}/cart/${userId}`, { headers, withCredentials: true });
-  }
-
-  public updateCartItem(itemId: string, data: any) {
-    const headers = new HttpHeaders({
-      Authorization: this.token
+    return this.http.get<any[]>(`${this.apiUrl}/cart/${userId}`, {
+      headers,
+      withCredentials: true,
     });
-    return this.http.put(`/cart/items/${itemId}`, data);
   }
 
   public deleteCartItem(itemId: string, userId: string) {
     const token = this.getToken();
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
-    return this.http.delete(`${this.apiUrl}/cart/items/${itemId}?userId=${userId}`, { headers, responseType: 'text' });
+    
+    return this.http.delete(
+      `${this.apiUrl}/cart/items/${itemId}?userId=${userId}`,
+      { headers, responseType: 'text' }
+    );
   }
 
-  
-  public checkout() {
+  public checkout(userdId: string): Observable<any> {
+    const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders({
-      Authorization: this.token
+      Authorization: `Bearer ${token}`,
     });
-    return this.http.post('/payments', {});
+
+    return this.http.post(`${this.apiUrl}/payments/${userdId}`, {}, { headers, responseType: 'text' });
   }
 
-  getLoggedUser(){
+  getLoggedUser() {
+    const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.token}`
+      Authorization: `Bearer ${token}`,
     });
 
-    return this.http.get(`${this.apiUrl}/api/users/me`, { headers, withCredentials: true })
+    return this.http.get(`${this.apiUrl}/api/users/me`, {
+      headers,
+      withCredentials: true,
+    });
   }
 }
